@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 아름다운 대칭 세상 - 교사용 대시보드</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --primary-color: #FFC107;
+            --secondary-color: #FFA000;
+            --text-color: #333;
+            --bg-color: #FFFDE7;
+            --card-bg: #FFFFFF;
+            --border-radius: 12px;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--primary-color);
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 12px 25px;
+            cursor: pointer;
+            background-color: var(--card-bg);
+            border: 2px solid var(--primary-color);
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button:hover, .tab-button.active {
+            background-color: var(--secondary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        }
+        
+        .card-content {
+            flex-grow: 1;
+        }
+
+        .accordion .accordion-item .accordion-title {
+            cursor: pointer;
+            font-weight: 700;
+            padding: 10px;
+            background-color: var(--bg-color);
+            border-radius: 8px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .accordion .accordion-item .accordion-title::after {
+            content: '▼';
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+        }
+        .accordion .accordion-item.active .accordion-title::after {
+            transform: rotate(180deg);
+        }
+        .accordion .accordion-item .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 10px;
+        }
+        .accordion .accordion-item.active .accordion-content {
+            padding: 10px;
+        }
+
+        ul {
+            list-style: '✓ ';
+            padding-left: 20px;
+        }
+        
+        .checklist li {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checklist li.completed {
+            text-decoration: line-through;
+            color: #999;
+            list-style: '✔ ';
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+        
+        .button:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .digital-tool-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+        
+        .digital-tool-list li {
+            margin-bottom: 10px;
+        }
+        
+        .digital-tool-list a {
+             display: block;
+             background-color: #f5f5f5;
+             padding: 10px 15px;
+             border-radius: 8px;
+             text-decoration: none;
+             color: var(--text-color);
+             font-weight: bold;
+             transition: all 0.2s ease;
+             border-left: 5px solid var(--primary-color);
+        }
+        
+        .digital-tool-list a:hover {
+            background-color: var(--bg-color);
+            transform: translateX(4px);
+            border-left-color: var(--secondary-color);
+        }
+
+        /* === NEW: Image Gallery Styles === */
+        .gallery-container {
+            border: 2px dashed var(--primary-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: center;
+            background-color: #fff9e6;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .gallery-container p {
+            margin: 0 0 20px 0;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .image-preview-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .image-preview-item {
+            width: 100%;
+            padding-top: 100%; /* Creates a square aspect ratio */
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .image-preview-item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures the image covers the square area */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>🎨 아름다운 대칭 세상 📐</h1>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'intro')">🚀 수업 도입</button>
+            <button class="tab-button" onclick="openTab(event, 'activity1')">🏃 활동 1: 대칭 찾기</button>
+            <button class="tab-button" onclick="openTab(event, 'activity2')">✂️ 활동 2: 모양 만들기</button>
+            <button class="tab-button" onclick="openTab(event, 'project')">🌟 심화 프로젝트</button>
+            <button class="tab-button" onclick="openTab(event, 'extra')">♻️ 연계 활동: 업사이클링</button>
+        </div>
+
+        <!-- 탭 내용: 수업 도입 -->
+        <div id="intro" class="tab-content active">
+            <h2>✨ 생각 깨우기: 일상 속 대칭을 만나다</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>🎯 학습 목표</h3>
+                    <div class="card-content">
+                        <ul>
+                            <li>선대칭도형의 의미를 이해하고 설명할 수 있다.</li>
+                            <li>대칭축, 대응점, 대응변, 대응각의 관계를 이해한다.</li>
+                            <li>일상생활에서 대칭 구조를 찾아보고 그 아름다움을 느낀다.</li>
+                            <li>대칭의 원리를 이용하여 창의적인 작품을 만들 수 있다.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>🔑 핵심 용어 정리</h3>
+                    <div class="card-content">
+                        <div class="accordion">
+                            <div class="accordion-item">
+                                <div class="accordion-title">대칭 (Symmetry)</div>
+                                <div class="accordion-content">
+                                    <p>하나의 축을 중심으로 양쪽의 모습이 똑같아 완벽한 균형을 이루는 상태를 말합니다. 동궁과 월지 사진처럼 호수에 비친 풍경이 실제 풍경과 마주 보며 똑같은 모습인 것이 대표적인 예시입니다.</p>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <div class="accordion-title">선대칭도형 (Line symmetric figure)</div>
+                                <div class="accordion-content">
+                                    <p>한 직선(대칭축)을 따라 접었을 때 완전히 겹치는 도형입니다.</p>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                 <div class="accordion-title">대칭축, 대응점, 대응변, 대응각</div>
+                                <div class="accordion-content">
+                                    <p><b>대칭축:</b> 선대칭도형을 접었을 때 접히는 선<br><b>대응점:</b> 접었을 때 겹치는 점<br><b>대응변:</b> 접었을 때 겹치는 변<br><b>대응각:</b> 접었을 때 겹치는 각</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 탭 내용: 활동 1 (*** UPDATED SECTION with Image Uploader ***) -->
+        <div id="activity1" class="tab-content">
+            <h2>🏃 활동 1: 우리 주변의 대칭 구조 찾기</h2>
+             <div class="grid">
+                <div class="card">
+                    <h3>📜 활동 안내</h3>
+                     <div class="card-content">
+                        <ol>
+                            <li>학교나 교실에서 대칭 구조를 가진 사물을 찾아봅니다. (예: 창문, 책상, 나비 모양 게시물)</li>
+                            <li>친구들과 함께 몸으로 대칭 구조를 표현하고 사진을 찍어봅니다.</li>
+                            <li>사진에 직접 대칭축을 그려보고, 왜 대칭이라고 생각했는지 이야기 나눕니다.</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>📸 우리반 대칭 사진관</h3>
+                    <div class="card-content">
+                        <div class="gallery-container">
+                            <p id="gallery-placeholder-text-1">여기에 학생들이 찍은<br>몸으로 표현한 대칭 사진을 붙여보세요!</p>
+                            <label for="galleryUpload" class="button">사진 업로드 🖼️</label>
+                            <input type="file" accept="image/*" multiple style="display: none;" id="galleryUpload">
+                            <div class="image-preview-container" id="image-preview-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 탭 내용: 활동 2 -->
+        <div id="activity2" class="tab-content">
+            <h2>✂️ 활동 2: 구멍 한 번, 직선 한 번으로 모양 만들기</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-content">
+                        <h3>펀치로 모양 만들기 💥</h3>
+                        <p>색종이를 접어 펀치를 한 번만 사용해 다양한 대칭 패턴을 만듭니다. 구멍 수와 접는 횟수의 관계를 탐구해 보세요.</p>
+                         <ul class="digital-tool-list">
+                            <li><a href="http://dtqr.kr/jxo2DEs" target="_blank">활동 1-가 (구멍 2개) 💻</a></li>
+                            <li><a href="http://dtqr.kr/jLbdqTu" target="_blank">활동 1-나 (구멍 2개) 💻</a></li>
+                             <li><a href="http://dtqr.kr/jCeBkB9" target="_blank">활동 2-가 (구멍 4개) 💻</a></li>
+                            <li><a href="http://dtqr.kr/4r9yMjJ" target="_blank">활동 2-나 (구멍 4개) 💻</a></li>
+                            <li><a href="http://dtqr.kr/jjNESiv" target="_blank">활동 3 (구멍 8개) 💻</a></li>
+                            <li><a href="http://dtqr.kr/jYy9LrD" target="_blank">활동 3 (구멍 16개) 💻</a></li>
+                             <li><a href="http://dtqr.kr/GJz8CS5" target="_blank">활동 5 (구멍 3개) 💻</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                     <div class="card-content">
+                        <h3>가위로 모양 오리기 싹둑!</h3>
+                        <p>종이를 접어 가위로 한 번만 잘라 여러 도형과 패턴을 만듭니다. 자르는 방향에 따라 어떤 모양이 나오는지 관찰해 보세요.</p>
+                         <ul class="digital-tool-list">
+                            <li><a href="http://dtqr.kr/XFN4dGF" target="_blank">활동 (마름모 2개) 💎</a></li>
+                            <li><a href="http://dtqr.kr/jYRVDoP" target="_blank">활동 (마름모 4개) 💎</a></li>
+                            <li><a href="http://dtqr.kr/ik6Eq94" target="_blank">심화 활동 (다양한 모양) ✨</a></li>
+                        </ul>
+                    </div>
+                </div>
+                 <div class="card">
+                    <h3>✔️ 준비물 체크리스트</h3>
+                     <div class="card-content">
+                        <ul class="checklist">
+                            <li onclick="toggleComplete(this)">색종이 (7.5cm x 7.5cm)</li>
+                            <li onclick="toggleComplete(this)">펀치</li>
+                            <li onclick="toggleComplete(this)">가위</li>
+                            <li onclick="toggleComplete(this)">꾸러미 자료 1,2,3,4</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 탭 내용: 심화 프로젝트 (*** UPDATED SECTION with Image Uploader ***) -->
+        <div id="project" class="tab-content">
+            <h2>🌟 심화 프로젝트: 나만의 페이퍼 아트 도전하기</h2>
+             <div class="grid">
+                 <div class="card">
+                     <h3>🎨 작품 구상하기</h3>
+                      <div class="card-content">
+                         <p>지금까지 배운 대칭의 원리를 활용하여 자신만의 페이퍼 아트 작품을 만들어 봅시다. 어떤 주제로 만들고 싶나요? 동물, 식물, 건물, 추상적인 패턴 등 자유롭게 구상해 보세요.</p>
+                         <ul>
+                             <li><b>주제 정하기:</b> (예: 봄의 나비, 밤하늘의 별자리)</li>
+                             <li><b>기법 선택하기:</b> 펀치, 가위 자르기, 접기 등</li>
+                             <li><b>디자인 스케치하기</b></li>
+                         </ul>
+                     </div>
+                 </div>
+                 <div class="card">
+                    <h3>🏆 우리반 페이퍼 아트 전시회</h3>
+                     <div class="card-content">
+                        <div class="gallery-container">
+                             <p id="gallery-placeholder-text-2">완성된 작품 사진을 찍어<br>디지털 전시회를 열어봅시다!</p>
+                             <label for="projectUpload" class="button">작품 사진 올리기 ✨</label>
+                             <input type="file" accept="image/*" multiple style="display: none;" id="projectUpload">
+                             <div class="image-preview-container" id="image-preview-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 탭 내용: 연계 활동 -->
+        <div id="extra" class="tab-content">
+            <h2>♻️ 연계 활동: 업사이클링 예술가, 지구 살리기</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>업사이클링이란? 🤔</h3>
+                     <div class="card-content">
+                        <p>버려지거나 쓸모없어진 물건을 단순 재활용하는 것을 넘어, 대칭과 같은 디자인 요소를 더해 새로운 가치를 지닌 예술 작품이나 물건으로 재탄생시키는 활동입니다.</p>
+                         <div class="accordion">
+                            <div class="accordion-item">
+                                <div class="accordion-title">업사이클링 예술가는 무슨 일을 하나요?</div>
+                                <div class="accordion-content">
+                                    <p>폐의류, 폐가구, 빈 병 등 버려진 물건에 마법을 걸어 새 생명을 불어넣는 마법사 같은 일을 합니다. 작품을 통해 환경 보호의 중요성을 알리고, 창의적인 아이디어로 세상에 영감을 줍니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>🌍 우리도 지구 지키기!</h3>
+                     <div class="card-content">
+                        <p>우리 주변에서 재활용 가능한 폐기물을 찾아 대칭 구조의 디자인을 더한 친환경 소품을 만들어 봅시다. (예: 페트병으로 만든 대칭 나비, 휴지심으로 만든 연필꽂이)</p>
+                        <br>
+                        <a href="https://blog.naver.com/designpress2016/221423481855" target="_blank" class="button">"The Bruges Whale" 작품 보기 🐋</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 탭 기능
+        function openTab(evt, tabName) {
+            let i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // 아코디언 기능
+        const accordionItems = document.querySelectorAll('.accordion-item');
+        accordionItems.forEach(item => {
+            const title = item.querySelector('.accordion-title');
+            const content = item.querySelector('.accordion-content');
+            title.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                accordionItems.forEach(i => {
+                    i.classList.remove('active');
+                    i.querySelector('.accordion-content').style.maxHeight = null;
+                });
+                if (!isActive) {
+                    item.classList.add('active');
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        });
+        
+        // 체크리스트 기능
+        function toggleComplete(element) {
+            element.classList.toggle('completed');
+        }
+
+        // === NEW: Image Uploader Functionality ===
+        function setupImageUploader(inputId, previewId, placeholderTextId) {
+            const inputElement = document.getElementById(inputId);
+            const previewContainer = document.getElementById(previewId);
+            const placeholderText = document.getElementById(placeholderTextId);
+
+            inputElement.addEventListener('change', function() {
+                if (this.files && this.files.length > 0) {
+                    // Hide placeholder text when first image is uploaded
+                    if (placeholderText) {
+                        placeholderText.style.display = 'none';
+                    }
+                }
+
+                for (const file of this.files) {
+                    if (file.type.startsWith('image/')){
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            const imgContainer = document.createElement('div');
+                            imgContainer.classList.add('image-preview-item');
+
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.alt = file.name;
+
+                            imgContainer.appendChild(img);
+                            previewContainer.appendChild(imgContainer);
+                        }
+                        
+                        reader.readAsDataURL(file);
+                    }
+                }
+            });
+        }
+
+        setupImageUploader('galleryUpload', 'image-preview-1', 'gallery-placeholder-text-1');
+        setupImageUploader('projectUpload', 'image-preview-2', 'gallery-placeholder-text-2');
+
+    </script>
+</body>
+</html>
